@@ -15,6 +15,6 @@ public class MovieDTO {
     int id;
     String title;
     String overview;
-    String release_date;
+    Date release_date;
 
 }

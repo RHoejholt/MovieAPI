@@ -1,5 +1,6 @@
 package app;
 import app.persistence.dtos.MovieDTO;
+import app.services.MovieService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
@@ -13,28 +14,14 @@ public class Main {
 
     private static final String apiKey = System.getenv("API_KEY");
     private static final HttpClient client = HttpClient.newHttpClient();
-    private static final ObjectMapper objectMapper = new ObjectMapper();
+    public static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static void main(String[] args) throws IOException, InterruptedException {
 
-        String movieId = "139";
-        String url = "https://api.themoviedb.org/3/movie/" + movieId + "?api_key=" + apiKey;
 
-        HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(url))
-                .GET()
-                .build();
+        MovieService ms = new MovieService();
 
-        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
-        if (response.statusCode() == 200) {
-            System.out.println(response.body());
-
-            MovieDTO movie = objectMapper.readValue(response.body(), MovieDTO.class);
-
-            System.out.println(movie);
-        } else {
-            System.out.println("response failed with code " + response.statusCode());
-        }
+        ms.getMovieById("139", apiKey);
 
     }
 }
