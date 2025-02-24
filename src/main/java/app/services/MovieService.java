@@ -74,7 +74,7 @@ public class MovieService {
 
             List<MovieDTO> movies = objectMapper.readValue(resultsNode.toString(), new TypeReference<List<MovieDTO>>() {});
 
-            System.out.println(movies);
+         //   System.out.println(movies);
             return movies;
         } else {
             System.out.println("Response failed with code " + response.statusCode());
@@ -106,7 +106,7 @@ public class MovieService {
                     .filter(movie -> movie.getOverview() != null && movie.getOverview().toLowerCase().contains(keyword.toLowerCase()))
                     .collect(Collectors.toList());
 
-            System.out.println(filteredMovies);
+        //    System.out.println(filteredMovies);
             return filteredMovies;
         } else {
             System.out.println("Response failed with code " + response.statusCode());
@@ -134,7 +134,7 @@ public class MovieService {
 
             List<MovieDTO> movies = objectMapper.readValue(resultsNode.toString(), new TypeReference<List<MovieDTO>>() {});
 
-            System.out.println(movies);
+       //     System.out.println(movies);
             return movies;
         } else {
             System.out.println("Response failed with code " + response.statusCode());

@@ -12,8 +12,7 @@ import com.fasterxml.jackson.core.exc.StreamReadException;
 
 public class Main {
 
-    private static final String apiKey = System.getenv("API_KEY");
-    private static final HttpClient client = HttpClient.newHttpClient();
+
     public static final ObjectMapper objectMapper = new ObjectMapper();
 
     public static void main(String[] args) throws IOException, InterruptedException {
