@@ -21,7 +21,9 @@ public class Main {
 
         MovieService ms = new MovieService();
 
-        ms.getMovieById("139", apiKey);
-
+        ms.getMovieById("139");
+        ms.getMoviesByOverview("kriger");
+        ms.getMoviesByReleaseDate("1994-09-09");
+        ms.getMoviesByTitle("Cake");
     }
 }
