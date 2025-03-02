@@ -37,6 +37,8 @@ public class MovieDTO {
         );
     }
 
+
+    //sets limit on description length and adds newline if too long
     private String wrapText(String text, int lineLength) {
         if (text == null || text.isEmpty()) return "No description available.";
         StringBuilder wrapped = new StringBuilder();

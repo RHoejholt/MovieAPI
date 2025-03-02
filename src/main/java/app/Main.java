@@ -18,6 +18,7 @@ public class Main {
         //only needs to be run once
         //populateDataBase(ms, movieDAO);
 
+        //update  demonstration
         Optional<MovieDTO> movie1 = movieDAO.findById(1);
         if(movie1.isPresent());
         {
@@ -26,8 +27,10 @@ public class Main {
             movieDAO.update(movieDTO1);
         }
 
+        //delete demonstration
         movieDAO.delete(100);
 
+        //name search demonstration
         List<MovieDTO> movies = movieDAO.findAll();
         String searchName = "Copenhagen";
         List<MovieDTO> filteredMovies = movies.stream()
@@ -38,6 +41,8 @@ public class Main {
         //runManualTesting(ms);
     }
 
+
+    //fetches all movies from TMDB with original_language in last X years
     private static void populateDataBase(MovieService ms, MovieDAO movieDAO) throws IOException, InterruptedException {
         List<MovieDTO> movies = (ms.getLanguageMoviesInLastYears(5, "da"));
         System.out.println(movies);
