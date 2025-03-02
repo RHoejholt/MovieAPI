@@ -1,6 +1,5 @@
 package app.services;
 
-import app.entities.Movie;
 import app.persistence.dtos.MovieDTO;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,11 +12,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.nio.charset.StandardCharsets;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
-
-import static app.Main.objectMapper;
 
 public class MovieService {
 
@@ -131,6 +129,56 @@ public class MovieService {
         }
     }
 
+    public List<MovieDTO> getLanguageMoviesInLastYears(int years, String language) throws IOException, InterruptedException {
+        LocalDate today = LocalDate.now();
+        LocalDate fiveYearsAgo = today.minusYears(years);
+        String url = "https://api.themoviedb.org/3/discover/movie?api_key=" + apiKey
+                + "&primary_release_date.gte=" + fiveYearsAgo
+                + "&primary_release_date.lte=" + today
+                + "&with_original_language=" + language;
 
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(url))
+                .GET()
+                .build();
+
+        HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+        if (response.statusCode() == 200) {
+
+            JsonNode rootNode = objectMapper.readTree(response.body());
+            JsonNode resultsNode = rootNode.path("results");
+            List<MovieDTO> movies = objectMapper.readValue(resultsNode.toString(), new TypeReference<List<MovieDTO>>() {});
+
+            int pages = rootNode.path("total_pages").asInt();
+            for (int i = 2; i <= pages; i++) {
+                movies.addAll(getPage(url, i));
+            }
+
+            return movies;
+        } else {
+            return Collections.emptyList();
+        }
+    }
+
+    private List<MovieDTO> getPage(String url, int page) throws IOException, InterruptedException {
+            url += "&page=" + page;
+
+            HttpRequest request = HttpRequest.newBuilder()
+                    .uri(URI.create(url))
+                    .GET()
+                    .build();
+
+            HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+            if (response.statusCode() == 200) {
+                JsonNode rootNode = objectMapper.readTree(response.body());
+                JsonNode resultsNode = rootNode.path("results");
+                return objectMapper.readValue(resultsNode.toString(), new TypeReference<List<MovieDTO>>() {});
+            } else {
+                return Collections.emptyList();
+            }
+
+    }
 
 }

@@ -1,16 +1,9 @@
 package app;
 
-import app.persistence.dtos.MovieDTO;
 import app.services.MovieService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
-import java.net.URI;
-import java.net.http.HttpClient;
-import java.net.http.HttpRequest;
-import java.net.http.HttpResponse;
-
-import com.fasterxml.jackson.core.exc.StreamReadException;
 
 
 public class Main {
@@ -23,9 +16,16 @@ public class Main {
 
         MovieService ms = new MovieService();
 
-        //System.out.println(ms.getMovieById("139"));
+
+        System.out.println(ms.getLanguageMoviesInLastYears(5, "da"));
+
+        //runManualTesting(ms);
+    }
+
+    private static void runManualTesting(MovieService ms) throws IOException, InterruptedException {
+        System.out.println(ms.getMovieById("139"));
         System.out.println(ms.getMoviesByOverview("the"));
-       // System.out.println(ms.getMoviesByReleaseDate("1994-09-09"));
-       // System.out.println(ms.getMoviesByTitle("Cake"));
+        System.out.println(ms.getMoviesByReleaseDate("1994-09-09"));
+        System.out.println(ms.getMoviesByTitle("Cake"));
     }
 }
