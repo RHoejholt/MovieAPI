@@ -1,27 +1,31 @@
+package app.persistence.dao.impl;
+
 import app.entities.Movie;
 import app.persistence.dao.IDAO;
 import app.persistence.dtos.MovieDTO;
 import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
-import jakarta.transaction.Transactional;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 
-@Transactional
 public class MovieDAO implements IDAO<MovieDTO> {
 
-    @PersistenceContext
     private EntityManager em;
+
+    public MovieDAO(EntityManager em) {
+        this.em = em;
+    }
 
     @Override
     public MovieDTO save(MovieDTO dto){
         Movie movie = new Movie();
         movie.setTitle(dto.getTitle());
         movie.setVoteAverage(0.0); //Default average
+        em.getTransaction().begin();
         em.persist(movie);
+        em.getTransaction().commit();
         return new MovieDTO();
     }
 
@@ -53,7 +57,9 @@ public class MovieDAO implements IDAO<MovieDTO> {
         Movie movie = em.find(Movie.class, dto.getId());
         if (movie != null) {
             movie.setTitle(dto.getTitle());
+            em.getTransaction().begin();
             em.merge(movie);
+            em.getTransaction().commit();
             return dto;
         }
         return null;
@@ -61,7 +67,9 @@ public class MovieDAO implements IDAO<MovieDTO> {
 
     @Override
     public void delete(int id) {
+        em.getTransaction().begin();
         Optional.ofNullable(em.find(Movie.class, id)).ifPresent(em::remove);
+        em.getTransaction().commit();
     }
 
 }

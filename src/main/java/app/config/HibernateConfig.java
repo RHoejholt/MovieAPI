@@ -1,6 +1,7 @@
 package app.config;
 
 //import app.entities.Point;
+import app.entities.Movie;
 import app.utils.Utils;
 
 import jakarta.persistence.EntityManagerFactory;
@@ -38,9 +39,8 @@ public class HibernateConfig {
         return emfTest;
     }
 
-    // TODO: IMPORTANT: Add Entity classes here for them to be registered with Hibernate
     private static void getAnnotationConfiguration(Configuration configuration) {
-        // configuration.addAnnotatedClass(Point.class);
+        configuration.addAnnotatedClass(Movie.class);
     }
 
     private static EntityManagerFactory createEMF(boolean forTest) {
@@ -91,9 +91,9 @@ public class HibernateConfig {
     }
 
     private static Properties setDevProperties(Properties props) {
-        String DBName = Utils.getPropertyValue("DB_NAME", "config.properties");
-        String DB_USERNAME = Utils.getPropertyValue("DB_USERNAME", "config.properties");
-        String DB_PASSWORD = Utils.getPropertyValue("DB_PASSWORD", "config.properties");
+        String DBName = Utils.getPropertyValue("DB_NAME", "config");
+        String DB_USERNAME = Utils.getPropertyValue("DB_USERNAME", "config");
+        String DB_PASSWORD = Utils.getPropertyValue("DB_PASSWORD", "config");
         props.put("hibernate.connection.url", "jdbc:postgresql://localhost:5432/" + DBName);
         props.put("hibernate.connection.username", DB_USERNAME);
         props.put("hibernate.connection.password", DB_PASSWORD);
