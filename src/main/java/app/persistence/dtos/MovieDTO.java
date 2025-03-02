@@ -13,7 +13,7 @@ import java.util.Date;
 public class MovieDTO {
 
     private double vote_average;
-    private int id;
+    private Long id;
     private String title;
     private String overview;
     private Date release_date;

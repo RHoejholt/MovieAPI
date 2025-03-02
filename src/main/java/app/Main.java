@@ -7,6 +7,7 @@ import jakarta.persistence.EntityManagerFactory;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class Main {
     public static void main(String[] args) throws IOException, InterruptedException {
@@ -23,11 +24,16 @@ public class Main {
             MovieDTO movieDTO1 = movie1.get();
             movieDTO1.setTitle("half life 3");
             movieDAO.update(movieDTO1);
-
-
         }
 
         movieDAO.delete(100);
+
+        List<MovieDTO> movies = movieDAO.findAll();
+        String searchName = "Copenhagen";
+        List<MovieDTO> filteredMovies = movies.stream()
+                .filter(movie -> movie.getTitle() != null && movie.getTitle().toLowerCase().contains(searchName.toLowerCase()))
+                .collect(Collectors.toList());
+        System.out.println(filteredMovies);
 
         //runManualTesting(ms);
     }

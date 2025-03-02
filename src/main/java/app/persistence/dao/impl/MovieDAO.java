@@ -32,7 +32,7 @@ public class MovieDAO implements IDAO<MovieDTO> {
     }
 
     @Override
-    public Optional<MovieDTO> findById(int id) {
+    public Optional<MovieDTO> findById(long id) {
         return Optional.ofNullable(em.find(Movie.class, id))
                 .map(movie -> {
                     MovieDTO dto = new MovieDTO();
@@ -53,6 +53,10 @@ public class MovieDAO implements IDAO<MovieDTO> {
                 .map(movie -> {
                     MovieDTO dto = new MovieDTO();
                     dto.setTitle(movie.getTitle());
+                    dto.setVote_average(movie.getVote_average());
+                    dto.setOverview(movie.getOverview());
+                    dto.setRelease_date(movie.getRelease_date());
+                    dto.setId(movie.getId());
                     return dto;
                 })
                 .collect(Collectors.toList());
