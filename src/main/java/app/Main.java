@@ -1,12 +1,9 @@
 package app;
-
 import app.config.HibernateConfig;
 import app.persistence.dao.impl.MovieDAO;
 import app.persistence.dtos.MovieDTO;
 import app.services.MovieService;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.persistence.EntityManagerFactory;
-
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
@@ -26,7 +23,11 @@ public class Main {
             MovieDTO movieDTO1 = movie1.get();
             movieDTO1.setTitle("half life 3");
             movieDAO.update(movieDTO1);
+
+
         }
+
+        movieDAO.delete(100);
 
         //runManualTesting(ms);
     }
