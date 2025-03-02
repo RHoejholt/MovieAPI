@@ -3,21 +3,18 @@
 package app.config {
     class HibernateConfig {
         + configure()
+        + getEntityManagerFactory(): EntityManagerFactory
     }
 }
 
 package app.entities {
     class Movie {
-        + int id
+        + Long id
         + String title
         + String overview
-        + String releaseDate
+        + Date release_date
+        + double vote_average
 
-        + Movie()
-        + getId(): int
-        + getTitle(): String
-        + getOverview(): String
-        + getReleaseDate(): String
     }
 }
 
@@ -26,51 +23,70 @@ package app.exceptions {
         + String message
 
         + ApiException(String message)
-        + getMessage(): String
     }
 }
 
 package app.persistence.dtos {
     class MovieDTO {
-        + int id
+        + Long id
         + String title
         + String overview
-        + String releaseDate
+        + Date release_date
+        + double vote_average
+        + boolean adult
 
-        + MovieDTO(int id, String title, String overview, String releaseDate)
-        + getId(): int
-        + getTitle(): String
-        + getOverview(): String
-        + getReleaseDate(): String
+    }
+}
+
+package app.persistence.dao {
+    interface IDAO<T> {
+        + save(T dto): T
+        + findById(long id): Optional<T>
+        + findAll(): List<T>
+        + update(T dto): T
+        + delete(int id): void
+    }
+
+    class MovieDAO {
+        + save(MovieDTO dto): MovieDTO
+        + findById(long id): Optional<MovieDTO>
+        + findAll(): List<MovieDTO>
+        + update(MovieDTO dto): MovieDTO
+        + delete(int id): void
     }
 }
 
 package app.services {
     class MovieService {
-        + MovieService()
         + getMovieById(String id): MovieDTO
         + getMoviesByTitle(String title): List<MovieDTO>
         + getMoviesByOverview(String overview): List<MovieDTO>
         + getMoviesByReleaseDate(String releaseDate): List<MovieDTO>
+        + getLanguageMoviesInLastYears(int years, String language): List<MovieDTO>
     }
 }
 
 package app.utils {
     class Utils {
-        + static formatDate(String date): String
+        + static getPropertyValue(String propName, String resourceName): String
     }
 }
 
 package app {
     class Main {
         + main(String[] args): void
+        + populateDataBase(MovieService ms, MovieDAO movieDAO): void
+        + runManualTesting(MovieService ms): void
     }
 }
 
-MovieService --> Movie : "manages"
-MovieService --> MovieDTO : "transforms to"
-MovieService --> ApiException : "throws"
+MovieService --* MovieDTO
+MovieService  ..> ApiException : "throws"
 Main --> MovieService : "uses"
-HibernateConfig --> Movie : "configures"
+HibernateConfig --o Main
+MovieDAO --> Movie : "persists"
+MovieDAO --> MovieDTO : "converts to"
+Utils ..> ApiException : "throws"
+IDAO <|.. MovieDAO
 
 @enduml
