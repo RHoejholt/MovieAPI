@@ -1,0 +1,76 @@
+@startuml
+
+package app.config {
+    class HibernateConfig {
+        + configure()
+    }
+}
+
+package app.entities {
+    class Movie {
+        + int id
+        + String title
+        + String overview
+        + String releaseDate
+
+        + Movie()
+        + getId(): int
+        + getTitle(): String
+        + getOverview(): String
+        + getReleaseDate(): String
+    }
+}
+
+package app.exceptions {
+    class ApiException {
+        + String message
+
+        + ApiException(String message)
+        + getMessage(): String
+    }
+}
+
+package app.persistence.dtos {
+    class MovieDTO {
+        + int id
+        + String title
+        + String overview
+        + String releaseDate
+
+        + MovieDTO(int id, String title, String overview, String releaseDate)
+        + getId(): int
+        + getTitle(): String
+        + getOverview(): String
+        + getReleaseDate(): String
+    }
+}
+
+package app.services {
+    class MovieService {
+        + MovieService()
+        + getMovieById(String id): MovieDTO
+        + getMoviesByTitle(String title): List<MovieDTO>
+        + getMoviesByOverview(String overview): List<MovieDTO>
+        + getMoviesByReleaseDate(String releaseDate): List<MovieDTO>
+    }
+}
+
+package app.utils {
+    class Utils {
+        + static formatDate(String date): String
+    }
+}
+
+package app {
+    class Main {
+        + main(String[] args): void
+    }
+}
+
+MovieService --> Movie : "manages"
+MovieService --> MovieDTO : "transforms to"
+MovieService --> ApiException : "throws"
+Main --> MovieService : "uses"
+HibernateConfig --> Movie : "configures"
+
+@enduml

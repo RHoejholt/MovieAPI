@@ -42,14 +42,10 @@ public class MovieService {
 
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
         if (response.statusCode() == 200) {
-            System.out.println(response.body());
 
             MovieDTO movie = objectMapper.readValue(response.body(), MovieDTO.class);
-
-            System.out.println(movie);
             return movie;
         } else {
-            System.out.println("response failed with code " + response.statusCode());
             return null;
         }
 
@@ -67,17 +63,14 @@ public class MovieService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 200) {
-            System.out.println(response.body());
 
             JsonNode rootNode = objectMapper.readTree(response.body());
             JsonNode resultsNode = rootNode.path("results");
 
             List<MovieDTO> movies = objectMapper.readValue(resultsNode.toString(), new TypeReference<List<MovieDTO>>() {});
 
-         //   System.out.println(movies);
             return movies;
         } else {
-            System.out.println("Response failed with code " + response.statusCode());
             return Collections.emptyList();
         }
     }
@@ -94,7 +87,7 @@ public class MovieService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 200) {
-            System.out.println(response.body());
+
 
             JsonNode rootNode = objectMapper.readTree(response.body());
             JsonNode resultsNode = rootNode.path("results");
@@ -106,10 +99,9 @@ public class MovieService {
                     .filter(movie -> movie.getOverview() != null && movie.getOverview().toLowerCase().contains(keyword.toLowerCase()))
                     .collect(Collectors.toList());
 
-        //    System.out.println(filteredMovies);
             return filteredMovies;
         } else {
-            System.out.println("Response failed with code " + response.statusCode());
+
             return Collections.emptyList();
         }
     }
@@ -127,17 +119,14 @@ public class MovieService {
         HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
 
         if (response.statusCode() == 200) {
-            System.out.println(response.body());
 
             JsonNode rootNode = objectMapper.readTree(response.body());
             JsonNode resultsNode = rootNode.path("results");
 
             List<MovieDTO> movies = objectMapper.readValue(resultsNode.toString(), new TypeReference<List<MovieDTO>>() {});
 
-       //     System.out.println(movies);
             return movies;
         } else {
-            System.out.println("Response failed with code " + response.statusCode());
             return Collections.emptyList();
         }
     }

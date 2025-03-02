@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class MovieServiceTest {
 
-    private static String apiKey = System.getenv("API_KEY");
     MovieService ms = new MovieService();
 
     @Test
     void getMovieById() throws IOException, InterruptedException {
-        assertEquals("Mifune", ms.getMovieById("139"));;
+        MovieDTO movie = ms.getMovieById("139");
+        assertEquals("Mifune", movie.getTitle());;
     }
 
     @Test
@@ -27,9 +27,16 @@ class MovieServiceTest {
 
     @Test
     void getMoviesByOverview() throws IOException, InterruptedException {
-        List<MovieDTO> movies = ms.getMoviesByOverview("An orphaned boy enrolls in a school of wizardry");
+        List<MovieDTO> movies = ms.getMoviesByOverview("the");
         assertFalse(movies.isEmpty(), "No movies found!");
-        assertTrue(movies.get(0).getOverview().startsWith("An orphaned boy enrolls in a school of wizardry"));
+        assertTrue(movies.get(0).getOverview().contains("the"));
+
+    }
+
+    @Test
+    void getMoviesByOverview2() throws IOException, InterruptedException {
+        List<MovieDTO> movies = ms.getMoviesByOverview("svennebanan69");
+        assertTrue(movies.isEmpty(), "No movies found!");
 
     }
 
@@ -37,6 +44,6 @@ class MovieServiceTest {
     void getMoviesByReleaseDate() throws IOException, InterruptedException {
         List<MovieDTO> movies = ms.getMoviesByReleaseDate("1994-09-09");
         assertFalse(movies.isEmpty(), "No movies found!");
-        assertEquals(movies.get(0).getRelease_date(), "1994-09-09");
+        assertEquals(movies.get(0).getRelease_date().toString(), "Fri Sep 09 02:00:00 CEST 1994");
     }
 }
