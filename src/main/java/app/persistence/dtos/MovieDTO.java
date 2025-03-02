@@ -12,11 +12,12 @@ import java.util.Date;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieDTO {
 
-    int id;
-    String title;
-    String overview;
-    Date release_date;
-    boolean adult;
+    private double vote_average;
+    private int id;
+    private String title;
+    private String overview;
+    private Date release_date;
+    private boolean adult;
 
 
 
@@ -26,14 +27,12 @@ public class MovieDTO {
                 =====================
                 📌 Title: %s
                 📅 Release Date: %s
-                🔞 Adult: %s
                 📝 Overview: 
                 %s
                 =====================
                 """.formatted(
                 title,
                 release_date,
-                (adult ? "Yes" : "No"),
                 wrapText(overview, 80)
         );
     }

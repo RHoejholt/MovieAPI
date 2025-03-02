@@ -9,23 +9,35 @@ import jakarta.persistence.EntityManagerFactory;
 
 import java.io.IOException;
 import java.util.List;
-
+import java.util.Optional;
 
 public class Main {
-
-
-    public static final ObjectMapper objectMapper = new ObjectMapper();
-
     public static void main(String[] args) throws IOException, InterruptedException {
         EntityManagerFactory emf = HibernateConfig.getEntityManagerFactory();
         MovieDAO movieDAO = new MovieDAO(emf.createEntityManager());
         MovieService ms = new MovieService();
 
-        List<MovieDTO> movies = (ms.getLanguageMoviesInLastYears(1, "da"));
+        //only needs to be run once
+        //populateDataBase(ms, movieDAO);
+
+        Optional<MovieDTO> movie1 = movieDAO.findById(1);
+        if(movie1.isPresent());
+        {
+            MovieDTO movieDTO1 = movie1.get();
+            movieDTO1.setTitle("half life 3");
+            movieDAO.update(movieDTO1);
+        }
+
+        //runManualTesting(ms);
+    }
+
+    private static void populateDataBase(MovieService ms, MovieDAO movieDAO) throws IOException, InterruptedException {
+        List<MovieDTO> movies = (ms.getLanguageMoviesInLastYears(5, "da"));
         System.out.println(movies);
 
-        movieDAO.save(movies.get(0));
-        //runManualTesting(ms);
+        for(MovieDTO movie : movies) {
+            movieDAO.save(movie);
+        }
     }
 
     private static void runManualTesting(MovieService ms) throws IOException, InterruptedException {

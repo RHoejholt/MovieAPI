@@ -22,7 +22,9 @@ public class MovieDAO implements IDAO<MovieDTO> {
     public MovieDTO save(MovieDTO dto){
         Movie movie = new Movie();
         movie.setTitle(dto.getTitle());
-        movie.setVoteAverage(0.0); //Default average
+        movie.setVote_average(dto.getVote_average());
+        movie.setRelease_date(dto.getRelease_date());
+        movie.setOverview(dto.getOverview());
         em.getTransaction().begin();
         em.persist(movie);
         em.getTransaction().commit();
@@ -35,6 +37,10 @@ public class MovieDAO implements IDAO<MovieDTO> {
                 .map(movie -> {
                     MovieDTO dto = new MovieDTO();
                     dto.setTitle(movie.getTitle());
+                    dto.setVote_average(movie.getVote_average());
+                    dto.setId(id);
+                    dto.setOverview(movie.getOverview());
+                    dto.setRelease_date(movie.getRelease_date());
                     return dto;
                 });
     }
